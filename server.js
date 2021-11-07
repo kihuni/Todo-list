@@ -32,3 +32,13 @@ app.get('/',async(req, res) => {
     const itemsLeft = await db.collection('quotes').find().countDocuments({ completed: false })
     response.render('app.ejs', {items: todoItems, left: itemsLeft})
 })
+
+app.post('/addItems', (req, res) => {
+    db.collection('quotes').insertOne({ thing: request.body.todoItem, completed: false })
+    .then(result =>{
+
+        console.log('Todo added')
+        response.redirect('/')
+    })
+    .catch(error => console.error(error))
+})
