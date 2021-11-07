@@ -13,7 +13,7 @@ app.use(express.json())
 
 let PORT = 3000 
 let db,
-    dbConnectionStr = 'mongodb+srv://stephen:Stevo1000@cluster0.t7mwh.mongodb.net/Quotes?retryWrites=true&w=majority',
+    dbConnectionStr = process.env.DB_String,
     dbName = 'Quotes'
 
     // connecting to mongodb
@@ -27,8 +27,8 @@ app.listen(process.env.PORT/*for when heroku assigns a new port */ || PORT/*defa
 })
     
 
-app.get('/',async(req, res) => {
-    const todoItems = await db.collection('quotes').find().toArray()
+app.get('/', async(req, res) => {
+    const todoItems = await db.collection('quotes').find().toArray() //grab from database
     const itemsLeft = await db.collection('quotes').find().countDocuments({ completed: false })
     response.render('app.ejs', {items: todoItems, left: itemsLeft})
 })
